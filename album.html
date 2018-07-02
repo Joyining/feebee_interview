@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Album</title>
+    <style>
+        .thumb{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .thumb img{
+            display: block;
+            margin: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="thumb"></div>
+    <script>
+        fetch('https://emma.pixnet.cc/album/sets/5681828/elements?user=tysh310246')
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (myJson) {
+                    const thumb = document.querySelector('.thumb');
+                    let elements = myJson.elements;
+                    elements.forEach(element => {
+                        var newElement = document.createElement('img');
+                        newElement.setAttribute('src', `${element.thumb}`);
+                        console.log(newElement);
+                        thumb.appendChild(newElement); 
+                    });
+                    console.log(elements);
+                });
+    </script>
+</body>
+</html>
