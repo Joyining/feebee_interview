@@ -5,31 +5,42 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>iframe</title>
+    <style>
+        img{
+            width: 100%;
+            display: block;
+            padding: 10px;
+            background: #bbaf46;
+            box-sizing: border-box;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello there, i'm an iframe</h1>
-    <p>Send Message:
-        <button id="message_button">Hi parent</button>
-    </p>
-    <p>Got Message:</p>
-    <div id="results"></div>
+    <h1>This is an iframe</h1>
+    <img src="https://images.unsplash.com/photo-1508341421810-36b8fc06075b?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=ae31a4b53a0760596a4cdd94b3d03b95&auto=format&fit=crop&w=2867&q=80"
+        alt="">
 
     <script>
-        // Send a message to the parent
-        var sendMessage = function (msg) {
-            // Make sure you are sending a string, and to stringify JSON
-            window.parent.postMessage(msg, '*');
-        };
-        var results = document.getElementById('results'),
-            messageButton = document.getElementById('message_button');
+        function bindEvent(element, eventName, eventHandler) {
+            if (element.addEventListener) {
+                element.addEventListener(eventName, eventHandler, false);
+            } else if (element.attachEvent) {
+                element.attachEvent('on' + eventName, eventHandler);
+            }
+        }
+
         // Listen to messages from parent window
+        var image = document.querySelector('img');
         bindEvent(window, 'message', function (e) {
-            results.innerHTML = e.data;
-        });
-        // Send random message data on every button click
-        bindEvent(messageButton, 'click', function (e) {
-            var random = Math.random();
-            sendMessage('' + random);
+            let name = e.data.name;
+            if(name == 'spacing'){
+                image.style.padding = `${e.data.value}${e.data.suffix}`;
+            } else if (name == 'blur'){
+                image.style.filter = `blur(${e.data.value}${e.data.suffix})`;
+            } else if (name = 'base'){
+                image.style.background = `${e.data.value}${e.data.suffix}`;
+            }
         });
     </script>
 </body>

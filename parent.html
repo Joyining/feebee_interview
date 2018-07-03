@@ -4,52 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Parent</title>
     <style>
         iframe{
-            width: 80%;
-            height: 80%;
-            border: 2px solid red;
+            width: 1200px;
+            height: 900px;
+            border: 2px solid darkolivegreen;
+            margin: 20px 0;
         }
+
     </style>
 </head>
 <body>
     <h1>Parent Window</h1>
-    <p>Send Message:
-        <button id="message_button">Hi there iframe</button>
-    </p>
-    <p>Got Message:</p>
-    <div id="results"></div>
-    <br/>
+    <h2>Playing with CSS from HTML input</h2>
+    <div class="control">
+        <label for="spacing">Spacing</label>
+        <input type="range" name="spacing" id="spacing" min="10" max="200" data-sizing="px" value="10">
+    
+        <label for="blur">Blur</label>
+        <input type="range" name="blur" id="blur" min="0" max="25" data-sizing="px" value="0">
+    
+        <label for="base">Base Color</label>
+        <input type="color" name="base" value="#bbaf46">
+    </div>
+    <iframe src="iframe.html" frameborder="0" id="my_iframe"></iframe>
 
     <script>
-        var iframeSource = 'iframe.html';
-        // Create the iframe
-        var iframe = document.createElement('iframe');
-        iframe.setAttribute('src', iframeSource);
-        iframe.setAttribute('id', 'the_iframe');
-        iframe.style.width = 450 + 'px';
-        iframe.style.height = 200 + 'px';
-        document.body.appendChild(iframe);
         // Send a message to the child iframe
-
-        var iframeEl = document.getElementById('the_iframe'),
-            messageButton = document.getElementById('message_button'),
-            results = document.getElementById('results');
+        var iframeEl = document.getElementById('my_iframe');
+ 
         // Send a message to the child iframe
         var sendMessage = function (msg) {
             // Make sure you are sending a string, and to stringify JSON
             iframeEl.contentWindow.postMessage(msg, '*');
         };
-        // Send random messge data on every button click
-        bindEvent(messageButton, 'click', function (e) {
-            var random = Math.random();
-            sendMessage('' + random);
+
+        const inputs = document.querySelectorAll('.control input');
+        function handleUpdate() {
+            const suffix = this.dataset.sizing || '';
+            sendMessage({value:this.value, name:this.name, suffix:suffix});
+        }
+
+        inputs.forEach(input => { 
+            input.addEventListener('change', handleUpdate);
         });
-        // Listen to message from child window
-        bindEvent(window, 'message', function (e) {
-            results.innerHTML = e.data;
+        // 只有在放手change時才會觸發
+
+        inputs.forEach(input => {
+            input.addEventListener('mousemove', handleUpdate);
         });
+        // 還在滑動時就會會觸發
     </script>
 </body>
 </html>
