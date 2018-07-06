@@ -22,26 +22,37 @@
         alt="">
 
     <script>
-        function bindEvent(element, eventName, eventHandler) {
-            if (element.addEventListener) {
-                element.addEventListener(eventName, eventHandler, false);
-            } else if (element.attachEvent) {
-                element.attachEvent('on' + eventName, eventHandler);
-            }
-        }
+        // function bindEvent(element, eventName, eventHandler) {
+        //     if (element.addEventListener) {
+        //         element.addEventListener(eventName, eventHandler, false);
+        //     } else if (element.attachEvent) {
+        //         element.attachEvent('on' + eventName, eventHandler);
+        //     }
+        // }
 
         // Listen to messages from parent window
-        var image = document.querySelector('img');
-        bindEvent(window, 'message', function (e) {
+        const image = document.querySelector('img');
+        window.onmessage = function(e){
             let name = e.data.name;
-            if(name == 'spacing'){
-                image.style.padding = `${e.data.value}${e.data.suffix}`;
-            } else if (name == 'blur'){
-                image.style.filter = `blur(${e.data.value}${e.data.suffix})`;
-            } else if (name = 'base'){
-                image.style.background = `${e.data.value}${e.data.suffix}`;
+            let currentStyle = `${e.data.value}${e.data.suffix}`;
+            if (name == 'spacing') {
+                image.style.padding = currentStyle;
+            } else if (name == 'blur') {
+                image.style.filter = `blur(${currentStyle})`;
+            } else if (name = 'base') {
+                image.style.background = currentStyle;
             }
-        });
+        };
+        // bindEvent(window, 'message', function (e) {
+        //     let name = e.data.name;
+        //     if(name == 'spacing'){
+        //         image.style.padding = `${e.data.value}${e.data.suffix}`;
+        //     } else if (name == 'blur'){
+        //         image.style.filter = `blur(${e.data.value}${e.data.suffix})`;
+        //     } else if (name = 'base'){
+        //         image.style.background = `${e.data.value}${e.data.suffix}`;
+        //     }
+        // });
     </script>
 </body>
 </html>

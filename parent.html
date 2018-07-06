@@ -32,10 +32,8 @@
 
     <script>
         // Send a message to the child iframe
-        var iframeEl = document.getElementById('my_iframe');
- 
-        // Send a message to the child iframe
-        var sendMessage = function (msg) {
+        const iframeEl = document.getElementById('my_iframe');
+        let sendMessage = function (msg) {
             // Make sure you are sending a string, and to stringify JSON
             iframeEl.contentWindow.postMessage(msg, '*');
         };
